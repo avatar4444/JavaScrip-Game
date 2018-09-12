@@ -44,7 +44,7 @@
          x: 10,
          y: 160,
          speedX: 2.5,
-         isMoving: 0,
+         isMoving: false,
          w: 40,
          h: 40
      };
@@ -56,6 +56,8 @@
          w: 50,
          h: 36
      }
+
+     var sprites = {};
 
      var movePlayer = function () {
          player.isMoving = true;
@@ -74,6 +76,20 @@
      canvas.addEventListener('mouseup', stopPlayer);
      canvas.addEventListener('touchstart', movePlayer);
      canvas.addEventListener('touchend', stopPlayer);
+
+     var load = function () {
+         sprites.player = new Image();
+         sprites.player.src = 'images/hero.png';
+
+         sprites.background = new Image();
+         sprites.background.src = 'images/floor.png';
+
+         sprites.enemy = new Image();
+         sprites.enemy.src = 'images/enemy.png';
+
+         sprites.goal = new Image();
+         sprites.goal.src = 'images/chest.png';
+     };
 
      //update the logic
      var update = function () {
@@ -131,19 +147,19 @@
          //clear the canvas
          ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
+         //draw background
+         ctx.drawImage(sprites.background, 0, 0);
+
          //draw player
-         ctx.fillStyle = "#00FF00";
-         ctx.fillRect(player.x, player.y, player.w, player.h);
+         ctx.drawImage(sprites.player, player.x, player.y);
 
          //draw enemies
-         ctx.fillStyle = "#3333FF";
          enemies.forEach(function (element, index) {
-             ctx.fillRect(element.x, element.y, element.w, element.h);
+             ctx.drawImage(sprites.enemy, element.x, element.y);
          });
-
+        
          //draw goal 
-         ctx.fillStyle = "rgb(128,128,0)";
-         ctx.fillRect(goal.x, goal.y, goal.w, goal.h);
+         ctx.drawImage(sprites.goal, goal.x, goal.y);
 
      };
 
@@ -167,6 +183,7 @@
      }
 
      //initial kick
+     load();
      step();
 
  });
