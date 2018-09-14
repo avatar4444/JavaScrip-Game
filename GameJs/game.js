@@ -4,6 +4,9 @@
      var GAME_WIDTH = 640;
      var GAME_HEIGHT = 360;
 
+     //current level
+     var level = 1;
+
      //keep the game going
      var gameLive = true;
 
@@ -96,13 +99,22 @@
 
          //check if you've won the game
          if (checkCollision(player, goal)) {
-             //stop the game
-             gameLive = false;
 
-             alert('You\'ve won!');
+             //increase the level
+             level++;
 
-             //reload page
-             window.location = "";
+             //set the player back to the start
+             player.x = 10;
+             player.y = 160;
+
+             //increase the speed of the enemies by 1
+             enemies.forEach(function (element, index) {
+                 element.speedY += element.speedY / Math.abs(element.speedY);
+             });
+
+             //look in the console for level/enemies
+             console.log(level);
+             console.log(enemies);
          }
 
          //update player
@@ -157,7 +169,7 @@
          enemies.forEach(function (element, index) {
              ctx.drawImage(sprites.enemy, element.x, element.y);
          });
-        
+
          //draw goal 
          ctx.drawImage(sprites.goal, goal.x, goal.y);
 
